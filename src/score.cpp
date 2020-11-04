@@ -728,6 +728,8 @@ double compute_jack_knife(int j, int k, double rg, int SNP_max)
 	pair<double, double> jack_output; 
 	vector<double> jack_weight(22*block_per_chrom,1); 
 	//weighted jacknife SE
+	for( int t=0; t<110; t++) 
+		cout<<jack_knife_rg[t]<<endl; 
 	jack_output = weightedjack(jack_knife_rg, jack_weight, rg); 
 
 	cout<<"Weighted jackknife SE: "<<jack_output.second<<endl; 
@@ -1168,15 +1170,20 @@ void rhe_reg(MatrixXdr & zb,MatrixXdr  &Xzb_total, MatrixXdr &resid_total,  int 
 		}
 		else{
 		resid_total.block(0, pheno_i*(10*cat_num)+b_iter*cat_num, g.Nindv, cat_num) += Xzb.transpose();
+		for (int block_iter=0; block_iter<total_num_blocks; block_iter++)
+                        {
+			if(block_iter != block_omit)
+			resid_jackknife.block(0, pheno_i*(10*total_num_blocks) + block_iter*10+b_iter, g.Nindv, 1) += Xzb.transpose(); 
+			}
 		} 
 	Xzb_total.block(0, pheno_i*(10*cat_num)+b_iter*cat_num, g.Nindv, cat_num) += Xzb.transpose();
 	// assume cat_num for now; TODO: fix this for partition
 	//for jackknife; disabled for now
-	/*
+	
 	for(int block_iter=0; block_iter<total_num_blocks; block_iter++) 
 		if (block_iter != block_omit)
 		Xzb_jackknife.block(0, pheno_i*total_num_blocks*10+block_iter*10+ b_iter, g.Nindv, 1) += Xzb.transpose(); 
-	*/
+		
 	}
 //	tr_k_rsid = tr_k_rsid/10/g.Nsnp/B;
 //	}
@@ -1729,7 +1736,7 @@ int main(int argc, char const *argv[]){
                 	cout<<"V(G)/Vp: "<<herit.block(0,0, cat_num, 1).sum()/herit.sum()<<endl;
 			h2g_estimates.block(0, i*cat_num, 1,cat_num) = herit.block(0,0,cat_num, 1).transpose();
 		//----------jackknife SE --------
-		/*	
+			
 			double estimate = herit(0,0) / herit.sum(); 
 			h2g_estimates(0, i) = herit(0,0); 
 			
@@ -1770,7 +1777,7 @@ int main(int argc, char const *argv[]){
 			jack_output = weightedjack(jackknife_h2g, jack_weight, estimate); 
 			cout<< "SE: "<< jack_output.second<<endl; 
 			
-			*/
+			
 
 
                 	/*if(bpheno){
@@ -1834,16 +1841,15 @@ int main(int argc, char const *argv[]){
                         MatrixXdr herit = A.colPivHouseholderQr().solve(b);
 		        cout <<"rho_g: "<<herit.block(0, 0,cat_num, 1)<<endl;
                         cout <<"rho_e: "<<herit(cat_num,0)<<endl;
-			cout<<"gamma_g:"<<endl; 
 			for (int partition_i=0; partition_i<cat_num; partition_i++) 
 			{
-				cout<<"gamma_g\t"<<partition_i<<"\t"<<herit(partition_i, 0) / sqrt(h2g_estimates(0, k*cat_num+partition_i)) / sqrt(h2g_estimates(0, j*cat_num+partition_i))<<endl ;  
+				cout<<"gamma_g("<<partition_i<<"):"<<herit(partition_i, 0) / sqrt(h2g_estimates(0, k*cat_num+partition_i)) / sqrt(h2g_estimates(0, j*cat_num+partition_i))<<endl ;  
 
 			}
 //			cout <<"gamma_g: "<<herit.block(0,0, cat_num, 1) / sqrt(h2g_estimates(0,j))/sqrt(h2g_estimates(0, k))<<endl ; 
 
 			//----for jackknife SE -----
-			/*		
+					
 			double rg_estimate = herit(0,0) / sqrt(h2g_estimates(0,j))/sqrt(h2g_estimates(0, k));
 
 			vector<double> jackknife_rg(total_num_blocks, 1);
@@ -1883,12 +1889,7 @@ int main(int argc, char const *argv[]){
 			 pair<double, double> jack_output;
                         jack_output = weightedjack(jackknife_rg, jack_weight, rg_estimate);
                         cout<< "SE(gamma_g): "<< jack_output.second<<endl;
-			cout<<"jackknife rg: "<<endl; 
-			for(int jk_idx=0; jk_idx<(total_num_blocks); jk_idx++)
-                        {
-                                cout<<jackknife_rg[jk_idx]<<endl;
-                        }
-			*/
+			
 			
 			}
 
