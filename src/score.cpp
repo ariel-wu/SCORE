@@ -728,8 +728,6 @@ double compute_jack_knife(int j, int k, double rg, int SNP_max)
 	pair<double, double> jack_output; 
 	vector<double> jack_weight(22*block_per_chrom,1); 
 	//weighted jacknife SE
-	for( int t=0; t<110; t++) 
-		cout<<jack_knife_rg[t]<<endl; 
 	jack_output = weightedjack(jack_knife_rg, jack_weight, rg); 
 
 	cout<<"Weighted jackknife SE: "<<jack_output.second<<endl; 
