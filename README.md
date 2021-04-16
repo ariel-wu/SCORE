@@ -31,7 +31,7 @@ cmake ..
 make
 ```
 
-## Documentation for RHE_reg
+## Documentation for SCORE
 
 After compiling the executble SCORE is present in the build directory. 
 To run RHE_reg, use
@@ -70,3 +70,4 @@ To compute genetics correlation only for shared-sample phenotypes:
 ./build/SCORE -g ./example/all -p pheno_1.pheno.plink -mpheno 1,2 -fill -noh2g -b 10 
 ```
 
+While have multiple phenotyes (> 10) it's recommand to run SCORE pairwisely. Analysing phenotypes pairwise and jointly are mathmatically equivalent for this method. 

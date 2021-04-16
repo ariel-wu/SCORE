@@ -1,0 +1,3 @@
+/u/scratch/w/wuyue071/SCORE/build/CMakeFiles/rebuild_cache.dir
+/u/scratch/w/wuyue071/SCORE/build/CMakeFiles/edit_cache.dir
+/u/scratch/w/wuyue071/SCORE/build/CMakeFiles/SCORE.dir

@@ -1,0 +1,1 @@
+/u/local/compilers/gcc/4.9.3/bin/c++   -std=c++0x -O3   CMakeFiles/SCORE.dir/src/score.cpp.o CMakeFiles/SCORE.dir/src/genotype.cpp.o CMakeFiles/SCORE.dir/src/storage.cpp.o  -o SCORE -rdynamic 
